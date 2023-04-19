@@ -1,3 +1,4 @@
+import View from "./view.js ";
 const App = {
   $: {
     menu: document.querySelector('[data-id="menu"]'),
@@ -8,6 +9,7 @@ const App = {
     modal: document.querySelector('[data-id="modal"]'),
     modalText: document.querySelector('[data-id="modal-text"]'),
     modalBtn: document.querySelector('[data-id="modal-btn"]'),
+    turn: document.querySelector('[data-id="turn"]'),
   },
   init() {
     App.registerEventListeners();
@@ -88,13 +90,25 @@ const App = {
           App.state.moves.length === 0
             ? 1
             : getOppositePlayer(lastMove.playerId);
+
+        // Showing which player is Playing next.
+        const nextPlayer = getOppositePlayer(currentPlayer);
+        const turnIcon = document.createElement("i");
+        const turnLabel = document.createElement("p");
+        turnLabel.innerText = `Player ${nextPlayer}, you're up!`;
         // Adding the icon according to the Player
         const icon = document.createElement("i");
         if (currentPlayer === 1) {
           icon.classList.add("fa-solid", "fa-x", "turquoise");
+          turnIcon.classList.add("fa-solid", "fa-o", "yellow");
+          turnLabel.classList.add("yellow");
         } else {
           icon.classList.add("fa-solid", "fa-o", "yellow");
+          turnIcon.classList.add("fa-solid", "fa-x", "turquoise");
+          turnLabel.classList.add("turquoise");
         }
+
+        App.$.turn.replaceChildren(turnIcon, turnLabel);
 
         App.state.moves.push({
           squareId: +square.id,
@@ -122,3 +136,11 @@ const App = {
 };
 
 window.addEventListener("load", App.init);
+
+function init() {
+  const view = new View();
+
+  console.log(view.$.turn);
+}
+
+window.addEventListener("load", init);
