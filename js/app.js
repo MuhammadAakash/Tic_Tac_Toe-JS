@@ -145,7 +145,7 @@ const players = [
     colorClass: "turquoise",
   },
   {
-    id: `2`,
+    id: 2,
     name: "Player 2",
     iconClass: "fa-o",
     colorClass: "yellow",
@@ -155,17 +155,31 @@ const players = [
 function init() {
   const view = new View();
   const store = new Store(players);
-  console.log(store.game);
 
   view.bindGameResetEvent((event) => {
-    view.closeModel();
+    view.closeAll();
+
     store.resetGame();
     view.clearMoves();
     view.setToggleIndicator(store.game.currentPlayer);
+    view.updateScoreboard(
+      store.stats.playerWithStats[0].wins,
+      store.stats.playerWithStats[0].wins,
+      store.stats.ties
+    );
   });
 
   view.bindNewRoundEvent((event) => {
-    console.log("New Round EVent");
+    store.newRound();
+
+    view.closeAll();
+    view.clearMoves();
+    view.setToggleIndicator(store.game.currentPlayer);
+    view.updateScoreboard(
+      store.stats.playerWithStats[0].wins,
+      store.stats.playerWithStats[0].wins,
+      store.stats.ties
+    );
   });
 
   view.bindPlayerMoveEvent((square) => {

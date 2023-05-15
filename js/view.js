@@ -12,6 +12,9 @@ export default class View {
     this.$.modalText = this.#qs('[data-id="modal-text"]');
     this.$.modalBtn = this.#qs('[data-id="modal-btn"]');
     this.$.turn = this.#qs('[data-id="turn"]');
+    this.$.p1Wins = this.#qs('[data-id="p1-wins"]');
+    this.$.p2Wins = this.#qs('[data-id="p2-wins"]');
+    this.$.ties = this.#qs('[data-id="ties"]');
 
     this.$$.squares = this.#qsAll('[data-id="square"]');
 
@@ -39,12 +42,30 @@ export default class View {
 
   // Utility Methods
 
+  updateScoreboard(p1Wins, p2Wins, ties) {
+    this.$.p1Wins.innerText = `${p1Wins} wins`;
+    this.$.p2Wins.innerText = `${p2Wins} wins`;
+    this.$.ties.innerText = `${ties} ties`;
+  }
   openModel(message) {
     this.$.modal.classList.remove("hidden");
     this.$.modalText.innerText = message;
   }
-  closeModel() {
+  #closeModel() {
     this.$.modal.classList.add("hidden");
+  }
+  closeAll() {
+    this.#closeModel();
+    this.#closeMenu();
+  }
+  #closeMenu() {
+    this.$.menuItems.classList.add("hidden");
+    this.$.menuButton.classList.remove("border");
+
+    const icon = this.$.menuButton.querySelector("i");
+
+    icon.classList.add("fa-chevron-down");
+    icon.classList.remove("fa-chevron-up");
   }
 
   clearMoves() {
