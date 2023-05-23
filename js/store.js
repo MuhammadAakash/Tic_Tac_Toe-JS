@@ -8,7 +8,8 @@ const initialValue = {
 
 export default class Store {
   #state = initialValue;
-  constructor(players) {
+  constructor(key, players) {
+    this.storageKey = key;
     this.players = players;
   }
 
@@ -103,7 +104,8 @@ export default class Store {
     this.#saveState(stateCloned);
   }
   #getState() {
-    return this.#state;
+    const item = window.localStorage.getItem(this.storageKey);
+    return item ? JSON.parse(item) : initialValue;
   }
 
   #saveState(stateOrFn) {
@@ -121,6 +123,6 @@ export default class Store {
       default:
         throw new Error("Invalid argument passed to saveState");
     }
-    this.#state = newState;
+    window.localStorage.setItem(this.storageKey, JSON.stringify(newState));
   }
 }
