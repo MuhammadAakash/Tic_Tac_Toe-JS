@@ -73,6 +73,15 @@ export default class View {
       square.replaceChildren();
     });
   }
+
+  initializeMoves(moves) {
+    this.$$.squares.forEach((square) => {
+      const existingMoves = moves.find((move) => move.squareId === +square.id);
+      if (existingMoves) {
+        this.handlePlayerMove(square, existingMoves.player);
+      }
+    });
+  }
   #toggleMenu() {
     this.$.menuItems.classList.toggle("hidden");
     this.$.menuButton.classList.toggle("border");
